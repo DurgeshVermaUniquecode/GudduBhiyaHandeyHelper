@@ -19,6 +19,8 @@
 /storage/*.key
 /storage/pail
 /vendor
+/AdminLTE-3.2.0
+
 
 Homestead.json
 Homestead.yaml

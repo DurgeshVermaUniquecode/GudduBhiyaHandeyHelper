@@ -35,7 +35,7 @@
     method="POST"
     class="needs-validation" >
                           
-                        
+                        <input type="hidden" name="id" value="{{$editCategory->id??''}}">
                         
                         @csrf
                             <div class="card-body">

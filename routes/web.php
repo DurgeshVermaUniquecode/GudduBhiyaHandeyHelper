@@ -13,6 +13,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/login', function () {
+    abort(403, 'Unauthorized');
+})->name('login');
 
 Route::prefix('vendor')->group(function () {
 
@@ -49,9 +52,13 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
         Route::resource('categories', CategoryController::class);
         Route::any('update-category', [CategoryController::class, 'updateCategory'])->name('update-category');
-
+        
         Route::resource('subcategories', SubCategoryController::class);
+        Route::any('update-subcategory', [SubCategoryController::class, 'updateSubCategory'])->name('update-subcategory');
+        
         Route::resource('service-types', ServiceTypeController::class);
+        Route::any('update-service-types', [ServiceTypeController::class, 'updateServiceType'])->name('update-service-types');
+        
         Route::resource('services', ServiceController::class);
         Route::get('dashboard', [AdminAuthController::class, 'dashboard'])->name('dashboard');
         Route::post('logout', [AdminAuthController::class, 'logout'])->name('logout');

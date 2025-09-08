@@ -46,12 +46,19 @@ class CategoryController extends Controller
         return redirect()->route('admin.categories.create')->with('success','Category updated successfully');
     }
 
-    public function updateCategory(Request $request,Category $category){
-        $id=$request->input('id');
-        $request->validate(['name' => 'required|unique:categories,name,'.$id]);
-        $category->update($request->all());
-        return redirect()->route('admin.categories.create')->with('success','Category updated successfully');
+   public function updateCategory(Request $request)
+    {
+        $id = $request->input('id');
 
+        $request->validate([
+            'name' => 'required|unique:categories,name,' . $id,
+        ]);
+
+        $category = Category::findOrFail($id);
+
+        $category->update($request->only('name', 'description', 'status')); // use only safe fields
+
+        return redirect()->route('admin.categories.create')->with('success', 'Category updated successfully');
     }
 
     public function destroy(Category $category)

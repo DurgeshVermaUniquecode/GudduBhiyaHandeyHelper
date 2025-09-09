@@ -10,25 +10,29 @@ class Service extends Model
     use HasFactory;
 
     protected $fillable = [
-        'vendor_id',
+        'category_id',
+        'subcategory_id',
+        'service_type_id',
         'title',
         'description',
-        'price',
+        'base_price',
+        'duration',
+        'image',
+        'status',
     ];
 
-    public function vendor()
+    public function category()
     {
-        return $this->belongsTo(Vendor::class);
+        return $this->belongsTo(Category::class);
     }
 
-    public function bookings()
+    public function subcategory()
     {
-        return $this->hasMany(Booking::class);
+        return $this->belongsTo(SubCategory::class);
     }
-    public function serviceType() {
-    return $this->belongsTo(ServiceType::class);
+
+    public function serviceType()
+    {
+        return $this->belongsTo(ServiceType::class);
+    }
 }
-
-
-}
-

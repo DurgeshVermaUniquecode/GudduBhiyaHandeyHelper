@@ -1,4 +1,4 @@
-@extends('layouts.authLayout')
+@extends('layout.authLayout')
 
 @section('title', 'Vendor Login')
 
@@ -44,12 +44,7 @@
                 </div>
             </form>
 
-            <p class="mb-1 mt-3">
-                <a href="{{ route('vendor.password.request') }}">I forgot my password</a>
-            </p>
-            <p class="mb-0">
-                <a href="{{ route('vendor.register') }}" class="text-center">Register a new membership</a>
-            </p>
+            
         </div>
     </div>
 </div>

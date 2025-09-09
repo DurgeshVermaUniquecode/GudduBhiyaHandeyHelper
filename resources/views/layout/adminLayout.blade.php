@@ -50,7 +50,7 @@
         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="index3.html" class="nav-link">Home</a>
+        <a href="{{route('admin.dashboard')}}" class="nav-link">Home</a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
         <a href="#" class="nav-link">Contact</a>
@@ -195,11 +195,21 @@
         <div class="image">
           <img src="{{asset('dist/img/user2-160x160.jpg')}}" class="img-circle elevation-2" alt="User Image">
         </div>
-        <div class="info">
-          <a href="#" class="d-block">@auth('admin')
-    <a href="#" class="d-block">{{ auth()->guard('admin')->user()->name }}</a>
-@endauth</a>
-        </div>
+       <div class="info d-flex align-items-center justify-content-between gap-3">
+    @auth('admin')
+        <span class="text-white ">{{ auth()->guard('admin')->user()->name }}</span>
+
+        <!-- Logout Form -->
+        <form id="logout-form" action="{{ route('admin.logout') }}" method="POST" style="display: none;">
+            @csrf
+        </form>
+        <a href="#" class="text-danger ml-4" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+            <i class="fas fa-sign-out-alt"></i>
+        </a>
+    @endauth
+</div>
+
+
       </div>
 
       <!-- SidebarSearch Form -->
@@ -245,6 +255,12 @@
             <a href="{{route('admin.service-types.create')}}" class="nav-link">
               <i class="nav-icon fas fa-file"></i>
               <p>Service Type</p>
+            </a>
+          </li>
+           <li class="nav-item"> 
+            <a href="{{route('admin.services.create')}}" class="nav-link">
+              <i class="nav-icon fas fa-file"></i>
+              <p>Service </p>
             </a>
           </li>
           <li class="nav-item">

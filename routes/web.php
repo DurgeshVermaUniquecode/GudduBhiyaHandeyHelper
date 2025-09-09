@@ -17,27 +17,22 @@ Route::get('/login', function () {
     abort(403, 'Unauthorized');
 })->name('login');
 
-Route::prefix('vendor')->group(function () {
-
-    // Registration Routes
-    Route::get('register', [VendorAuthController::class, 'showRegisterForm'])->name('vendor.register');
+Route::prefix('vendor')->name('vendor.')->group(function () {
+    Route::get('login', [VendorAuthController::class, 'showLoginForm'])->name('login');
+    Route::post('login', [VendorAuthController::class, 'login'])->name('login.submit');
+    Route::get('register', [VendorAuthController::class, 'showRegisterForm'])->name('register');
     Route::post('register', [VendorAuthController::class, 'register']);
 
-    // Login Routes
-    Route::get('login', [VendorAuthController::class, 'showLoginForm'])->name('vendor.login');
-    Route::post('login', [VendorAuthController::class, 'login']);
-
-    // Routes protected by vendor authentication
     Route::middleware('auth:vendor')->group(function () {
-        // Vendor Dashboard
         Route::get('dashboard', function () {
-            return view('vendor.dashboard'); // create this Blade file
-        })->name('vendor.dashboard');
+            return view('vendor.dashboard');
+        })->name('dashboard');
 
-        // Logout
-        Route::post('logout', [VendorAuthController::class, 'logout'])->name('vendor.logout');
+        Route::post('logout', [VendorAuthController::class, 'logout'])->name('logout');
     });
 });
+
+
 
 
 
@@ -55,7 +50,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
         
         Route::resource('subcategories', SubCategoryController::class);
         Route::any('update-subcategory', [SubCategoryController::class, 'updateSubCategory'])->name('update-subcategory');
-        
+        Route::get('/get-subcategories/{category_id}', [ServiceController::class, 'getSubcategories'])->name('get.subcategories');
+
         Route::resource('service-types', ServiceTypeController::class);
         Route::any('update-service-types', [ServiceTypeController::class, 'updateServiceType'])->name('update-service-types');
         

@@ -13,9 +13,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/login', function () {
-    abort(403, 'Unauthorized');
-})->name('login');
+// Route::get('/login', function () {
+//     abort(403, 'Unauthorized');
+// })->name('login');
 
 Route::prefix('vendor')->name('vendor.')->group(function () {
     Route::get('login', [VendorAuthController::class, 'showLoginForm'])->name('login');
@@ -33,7 +33,13 @@ Route::prefix('vendor')->name('vendor.')->group(function () {
 });
 
 
+// Route::group(['middleware' => ['role:admin']], function () {
+//     Route::get('/admin/dashboard', [AdminController::class, 'index']);
+// });
 
+// Route::group(['middleware' => ['role:employee']], function () {
+//     Route::get('/employee/dashboard', [EmployeeController::class, 'index']);
+// });
 
 
 Route::prefix('admin')->name('admin.')->group(function () {
@@ -60,3 +66,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::post('logout', [AdminAuthController::class, 'logout'])->name('logout');
     });
 });
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

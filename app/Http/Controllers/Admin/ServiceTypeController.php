@@ -69,13 +69,20 @@ $serviceType = ServiceType::findOrFail($id);
 
         $serviceType->update($request->only('name', 'description', 'status')); // use only safe fields
 
-        return redirect()->back()->with('success', 'Service Type updated successfully');
+           
+        return redirect()->route('admin.service-types.create')->with('success', 'Service Type updated successfully');
    
     }
 
     public function destroy(ServiceType $serviceType)
     {
-        $serviceType->delete();
+        // $serviceType->delete();
+
+        // Toggle the status
+    $serviceType->status = ($serviceType->status == 'active') ? 'inactive' : 'active';
+
+    // Save the updated status
+    $serviceType->save();
         return redirect()->back()
                          ->with('success', 'Service Type deleted successfully.');
     }

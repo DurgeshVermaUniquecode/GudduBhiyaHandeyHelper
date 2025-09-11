@@ -15,11 +15,11 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
 
-        $middleware->alias([
-            'admin' => AdminAuth::class,
-            'vendor' => VendorAuth::class
+        // $middleware->alias([
+        //     'admin' => AdminAuth::class,
+        //     'vendor' => VendorAuth::class
 
-        ]);
+        // ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
 
@@ -28,12 +28,12 @@ return Application::configure(basePath: dirname(__DIR__))
 
             if ($request->is('admin') || $request->is('admin/*')) {
 
-                return redirect()->route('admin.login');
+                return redirect()->route('login');
             }
 
             // If accessing vendor routes
             if ($request->is('vendor') || $request->is('vendor/*')) {
-                return redirect()->route('vendor.login');
+                return redirect()->route('login');
             }
 
             // Default fallback (if you add frontend login later)

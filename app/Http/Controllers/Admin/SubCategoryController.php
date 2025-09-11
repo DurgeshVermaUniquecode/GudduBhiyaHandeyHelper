@@ -1,5 +1,7 @@
-<?php 
+<?php
+
 namespace App\Http\Controllers\Admin;
+
 use App\Http\Controllers\Controller;
 use App\Models\SubCategory;
 use App\Models\Category;
@@ -22,11 +24,11 @@ class SubCategoryController extends Controller
 
         // If edit query param exists, find that SubCategory
         if ($request->has('edit')) {
-          
+
             $editSubCategory = SubCategory::find($request->edit);
         }
 
-        return view('admin.subcategories.create', compact('categories','subcategories','editSubCategory'));
+        return view('admin.subcategories.create', compact('categories', 'subcategories', 'editSubCategory'));
     }
 
     public function store(Request $request)
@@ -61,25 +63,31 @@ class SubCategoryController extends Controller
         return redirect()->route('subcategories.index')->with('success', 'Subcategory updated successfully.');
     }
 
-   public function updateSubCategory(Request $request)
+    public function updateSubCategory(Request $request)
+    {
+        $id = $request->input('id');
+
+        $request->validate([
+            'name' => 'required|unique:subcategories,name,' . $id,
+        ]);
+
+        $subCategory = SubCategory::findOrFail($id);
+
+        $subCategory->update($request->only('category_id', 'name', 'description', 'status'));
+
+        return redirect()->route('admin.subcategories.create')->with('success', 'Subcategory updated successfully');
+    }
+
+
+   public function destroy(SubCategory $subcategory)
 {
-    $id = $request->input('id');
+    // Toggle the status
+    $subcategory->status = ($subcategory->status == 'active') ? 'inactive' : 'active';
 
-    $request->validate([
-        'name' => 'required|unique:subcategories,name,' . $id,
-    ]);
+    // Save the updated status
+    $subcategory->save();
 
-    $subCategory = SubCategory::findOrFail($id);
-
-    $subCategory->update($request->only('category_id', 'name', 'description', 'status'));
-
-    return redirect()->route('admin.subcategories.create')->with('success', 'Subcategory updated successfully');
+    return redirect()->back()->with('success', 'Subcategory status updated successfully');
 }
 
-
-    public function destroy(Subcategory $subcategory)
-    {
-        $subcategory->delete();
-        return redirect()->back()->with('success', 'Subcategory deleted successfully.');
-    }
 }

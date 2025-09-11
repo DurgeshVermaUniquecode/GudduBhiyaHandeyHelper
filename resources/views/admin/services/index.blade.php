@@ -55,7 +55,7 @@
                                         <td>{{ $key+1 }}</td>
                                         <td>
                                             @if($service->image)
-                                                <img src="{{ asset('storage/'.$service->image) }}" width="50" height="50" class="img-thumbnail">
+                                                <img src="{{ asset($service->image) }}" width="50" height="50" class="img-thumbnail">
                                             @else
                                                 <span class="text-muted">No Image</span>
                                             @endif
@@ -77,10 +77,10 @@
                                             <form action="{{ route('admin.services.destroy',$service->id) }}" method="POST" style="display:inline-block;">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="btn btn-sm btn-danger"
-                                                    onclick="return confirm('Are you sure you want to delete this service?');">
-                                                    Delete
-                                                </button>
+
+                                                  <button type="submit" onclick="return confirm('Are you sure?')" class="btn btn-sm btn-{{$service->status == 'inactive'?'danger':'primary'}}">{{ucfirst($service->status)}}</button>
+                                           
+                                                
                                             </form>
                                         </td>
                                     </tr>

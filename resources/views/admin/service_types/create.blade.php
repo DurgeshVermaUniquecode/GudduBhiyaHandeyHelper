@@ -2,7 +2,6 @@
 @section('content')
 
 <div class="content-wrapper">
-
     <div class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
@@ -21,38 +20,36 @@
 
     <section class="content">
         <div class="container-fluid">
-
             <div class="row">
-
+                <!-- Add/Edit Form -->
                 <div class="col-md-6">
-
                     <div class="card card-primary">
                         <div class="card-header">
-                            <h3 class="card-title">Add Service Type</h3>
+                            <h3 class="card-title">{{ isset($editServiceType) ? 'Edit Service Type' : 'Add Service Type' }}</h3>
                         </div>
 
-                      
- <form  action="{{ isset($editServiceType) ? route('admin.update-service-types') : route('admin.service-types.store') }}" 
-    method="POST"
-    class="needs-validation" >
-                          
-                        <input type="hidden" name="id" value="{{$editServiceType->id??''}}">
-                        
-
-
+                        <form action="{{ isset($editServiceType) ? route('admin.update-service-types') : route('admin.service-types.store') }}"
+                            method="POST" class="needs-validation">
                             @csrf
+                            <input type="hidden" name="id" value="{{ $editServiceType->id ?? '' }}">
+
                             <div class="card-body">
                                 <div class="form-group">
                                     <label>Name</label>
-                                    <input type="text" name="name" class="form-control"  value="{{$editServiceType->name??''}}" required>
+                                    <input type="text" name="name" class="form-control" value="{{ $editServiceType->name ?? '' }}" required>
                                 </div>
 
                                 <div class="form-group">
                                     <label>Description</label>
-                                    <textarea name="description" class="form-control">{{$editServiceType->description??''}}</textarea>
+                                    <textarea name="description" class="form-control">{{ $editServiceType->description ?? '' }}</textarea>
                                 </div>
-
-
+                                <div class="form-group">
+                                    <label>Status</label>
+                                    <select name="status" class="form-control" required>
+                                        <option value="active" {{ (isset($editServiceType) && $editServiceType->status == 'active') ? 'selected' : '' }}>Active</option>
+                                        <option value="inactive" {{ (isset($editServiceType) && $editServiceType->status == 'inactive') ? 'selected' : '' }}>Inactive</option>
+                                    </select>
+                                </div>
                             </div>
 
                             <div class="card-footer">
@@ -62,59 +59,52 @@
                             </div>
                         </form>
                     </div>
-
-
-
                 </div>
 
+                <!-- List of Service Types -->
                 <div class="col-md-6">
-
-
-
-                    <div class="card card card-info">
-                        <div class="card-header ">
+                    <div class="card card-info">
+                        <div class="card-header">
                             <h3 class="card-title">Service Type List</h3>
                         </div>
-                        <!-- /.card-header -->
                         <div class="card-body">
                             <table id="example1" class="table table-bordered table-striped">
                                 <thead>
-                                    <th>ID</th>
-                                    <th>Name</th>
-                                    <th>Description</th>
-                                    <th width="20%">Actions</th>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Name</th>
+                                        <th>Description</th>
+                                        <th width="20%">Actions</th>
+                                    </tr>
                                 </thead>
                                 <tbody>
-                                      @foreach($serviceTypes as $type)
-                <tr>
-                    <td>{{ $type->id }}</td>
-                    <td>{{ $type->name }}</td>
-                    <td>{{ $type->description }}</td>
-                    <td>
-                        <a href="{{ route('admin.service-types.create', ['edit'=>$type->id]) }}" class="btn btn-sm btn-warning">Edit</a>
-                        <form action="{{ route('admin.service-types.destroy', $type) }}" method="POST" style="display:inline-block;">
-                            @csrf @method('DELETE')
-                            <button type="submit" onclick="return confirm('Are you sure?')" class="btn btn-sm btn-danger">
-                                Delete
-                            </button>
-                        </form>
-                    </td>
-                </tr>
-            @endforeach
+                                    @foreach($serviceTypes as $type)
+                                    <tr>
+                                        <td>{{ $type->id }}</td>
+                                        <td>{{ $type->name }}</td>
+                                        <td>{{ $type->description }}</td>
+                                        <td>
+                                            <!-- Edit Button -->
+                                            <a href="{{ route('admin.service-types.create', ['edit' => $type->id]) }}" class="btn btn-sm btn-warning">Edit</a>
+
+                                            <!-- Delete Form with Confirmation -->
+                                            <form action="{{ route('admin.service-types.destroy', $type->id) }}" method="POST" style="display:inline-block;">
+                                                @csrf
+                                                @method('DELETE')
+                                             <button type="submit" onclick="return confirm('Are you sure?')" class="btn btn-sm btn-{{$type->status == 'inactive'?'danger':'primary'}}">{{ucfirst($type->status)}}</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>
-                        <!-- /.card-body -->
                     </div>
-
                 </div>
 
             </div>
-
-
         </div>
     </section>
-
 </div>
 
 @endsection

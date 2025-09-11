@@ -114,7 +114,7 @@
                                             <label>Image</label>
                                             <input type="file" name="image" class="form-control">
                                             @if($service->image)
-                                                <img src="{{ asset('storage/'.$service->image) }}" alt="Service Image" class="mt-2" width="100">
+                                                <img src="{{ asset($service->image) }}" alt="Service Image" class="mt-2" width="100">
                                             @endif
                                         </div>
                                     </div>

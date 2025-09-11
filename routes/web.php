@@ -8,8 +8,12 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\SubCategoryController;
 use App\Http\Controllers\Admin\ServiceTypeController;
 use App\Http\Controllers\Admin\ServiceController;
+<<<<<<< HEAD
 use App\Http\Controllers\UserController;
 
+=======
+use Illuminate\Support\Facades\Auth;
+>>>>>>> 28d1546 (Resolved merge conflicts)
 Route::get('/', function () {
     return view('welcome');
 });
@@ -48,11 +52,11 @@ Route::prefix('vendor')->name('vendor.')->group(function () {
 Route::prefix('admin')->name('admin.')->group(function () {
 
     // Login routes
-    Route::get('login', [AdminAuthController::class, 'showLoginForm'])->name('login');
-    Route::post('login', [AdminAuthController::class, 'login'])->name('login.submit');
+    // Route::get('login', [AdminAuthController::class, 'showLoginForm'])->name('login');
+    // Route::post('login', [AdminAuthController::class, 'login'])->name('login.submit');
 
     // Routes protected by admin authentication
-    Route::middleware('auth:admin')->group(function () {
+    Route::middleware('auth')->group(function () {
 
         Route::resource('categories', CategoryController::class);
         Route::any('update-category', [CategoryController::class, 'updateCategory'])->name('update-category');

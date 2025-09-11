@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
 
 class LoginController extends Controller
 {
@@ -36,5 +37,23 @@ class LoginController extends Controller
     {
         $this->middleware('guest')->except('logout');
         $this->middleware('auth')->only('logout');
+    }
+
+     protected function authenticated(Request $request, $user)
+    {  //dd($user);
+       //dd($user->role_id);
+        // Role-based redirection
+        switch ($user->role_id) {
+            case '1':
+                return redirect()->route('admin.dashboard');
+            case '2':
+                return redirect()->route('employee.dashboard');
+            case '3':
+                return redirect()->route('vendor.dashboard');
+            case '4':
+                return redirect()->route('user.dashboard');
+            default:
+                return redirect()->route('home'); // fallback to home
+        }
     }
 }

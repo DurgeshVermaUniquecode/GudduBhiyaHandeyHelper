@@ -62,6 +62,15 @@
                                 <textarea name="description" class="form-control">{{ $editSubCategory->description ?? '' }}</textarea>
                             </div>
 
+                             <div class="form-group">
+                                    <label>Status</label>
+                                    <select name="status" class="form-control" required>
+                                        <option value="">Select Status</option>
+                                        <option value="active" {{ (isset($editSubCategory) && $editSubCategory->status == 'active') ? 'selected' : '' }}>Active</option>
+                                        <option value="inactive" {{ (isset($editSubCategory) && $editSubCategory->status == 'inactive') ? 'selected' : '' }}>Inactive</option>
+                                    </select>
+                                </div>
+
                              <button type="submit" class="btn btn-success">
             {{ isset($editSubCategory) ? 'Update' : 'Save' }}
         </button>
@@ -104,8 +113,9 @@
                                                 <a href="{{ route('admin.subcategories.create', ['edit'=>$subcategory->id]) }}" class="btn btn-sm btn-warning">Edit</a>
                                                 <form action="{{ route('admin.subcategories.destroy', $subcategory) }}" method="POST" style="display:inline-block;">
                                                     @csrf @method('DELETE')
-                                                    <button type="submit" class="btn btn-sm btn-danger"
-                                                    onclick="return confirm('Are you sure?')">Delete</button>
+                                                    
+                                                    <button type="submit" onclick="return confirm('Are you sure?')" class="btn btn-sm btn-{{$subcategory->status == 'inactive'?'danger':'primary'}}">{{ucfirst($subcategory->status)}}</button>
+                                           
                                                 </form>
                                             </td>
                                         </tr>

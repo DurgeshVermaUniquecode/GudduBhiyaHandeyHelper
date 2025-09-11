@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\SubCategoryController;
 use App\Http\Controllers\Admin\ServiceTypeController;
 use App\Http\Controllers\Admin\ServiceController;
+use App\Http\Controllers\UserController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -16,6 +17,8 @@ Route::get('/', function () {
 // Route::get('/login', function () {
 //     abort(403, 'Unauthorized');
 // })->name('login');
+
+Route::get('dashboard', [UserController::class, 'dashboard'])->name('dashboard');
 
 Route::prefix('vendor')->name('vendor.')->group(function () {
     Route::get('login', [VendorAuthController::class, 'showLoginForm'])->name('login');
